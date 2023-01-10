@@ -50,7 +50,7 @@ function distributeGoods(products: Product[], orders: Order[]) : void {
     for (const order of orders) {
         for (const pref of order.preferences) {
             const alloc = new Allocation(pref.variety)
-            solver.addEditVariable(alloc.finalCount, kiwi.Strength.medium)
+            solver.addEditVariable(alloc.finalCount, alloc.strength as number)
             solver.suggestValue(alloc.finalCount, pref.count)
             order.allocations.push(alloc)
         }
@@ -93,10 +93,11 @@ function distributeGoods(products: Product[], orders: Order[]) : void {
 }
 
 const fruit = new Variety("fruit", [])
-const product = new Product(fruit, 4)
-const prefLine = new Product(fruit, 5)
-const requLine = new Product(fruit, 3)
-const order = new Order("Jim", [requLine], [prefLine])
-distributeGoods([product], [order])
-console.log( JSON.stringify(order))
-console.log( JSON.stringify(product))
+const vege = new Variety("veg", [])
+const fruitStock = new Product(fruit, 7)
+const vegeStock = new Product(vege, 9)
+const order1 = new Order("Jim", [new Product(fruit, 3), new Product(vege, 3)], [new Product(fruit, 5), new Product(vege, 5)])
+const order2 = new Order("Ben", [new Product(fruit, 3), new Product(vege, 3)], [new Product(fruit, 5), new Product(vege, 5)])
+distributeGoods([fruitStock, vegeStock], [order1, order2])
+console.log( JSON.stringify(order1))
+console.log( JSON.stringify(order2))
