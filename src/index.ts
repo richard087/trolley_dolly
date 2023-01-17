@@ -46,7 +46,12 @@ class Order {
     }
 }
 
-function distributeProductsToOrders({ products, orders }: { products: Product[]; orders: Order[]; }) : void {
+/**
+ * @param {Array<Product>}  products - The stock that may be allocated
+ * @param {Array<Order>} orders - The orders to allocate stock/products to
+ * @returns {void} - Results are updated into the orders directly.
+ */
+function distributeProductsToOrders(products: Product[], orders: Order[]) : void {
     const solver = new kiwi.Solver();
 
     for (const order of orders) {
@@ -97,14 +102,4 @@ function distributeProductsToOrders({ products, orders }: { products: Product[];
     // Solve the constraints
     solver.updateVariables();
 }
-
-
-const fruit = new Variety("fruit", [])
-const vege = new Variety("veg", [])
-const fruitStock = new Product(fruit, 7)
-const vegeStock = new Product(vege, 9)
-const order1 = new Order("Jim", [new Product(fruit, 3), new Product(vege, 3)], [new Product(fruit, 5), new Product(vege, 5)])
-const order2 = new Order("Ben", [new Product(fruit, 3), new Product(vege, 3)], [new Product(fruit, 5), new Product(vege, 5)])
-distributeProductsToOrders({ products: [fruitStock, vegeStock], orders: [order1, order2] })
-console.log(order1.formatAllocations())
-console.log(order2.formatAllocations())
+export {Variety, Product, Order, distributeProductsToOrders};
